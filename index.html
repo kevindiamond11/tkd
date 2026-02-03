@@ -1,0 +1,152 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TK Eligibility Checker (CA)</title>
+  <style>
+    :root {
+      --bg: #f7f4ef;
+      --card: #ffffff;
+      --ink: #1f2a32;
+      --accent: #1f6f5b;
+      --muted: #5b6770;
+      --border: #e3ded6;
+    }
+    body {
+      margin: 0;
+      font-family: "Georgia", "Times New Roman", serif;
+      background: radial-gradient(1200px 600px at 10% -10%, #e7efe7, transparent),
+                  radial-gradient(1200px 600px at 110% 10%, #f1e9dc, transparent),
+                  var(--bg);
+      color: var(--ink);
+    }
+    .wrap {
+      max-width: 720px;
+      margin: 24px auto;
+      padding: 16px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      padding: 24px;
+    }
+    h1 {
+      font-size: 1.6rem;
+      margin: 0 0 8px 0;
+      letter-spacing: 0.2px;
+    }
+    p {
+      margin: 0 0 16px 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    input[type="date"] {
+      font-size: 1rem;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      width: 100%;
+      max-width: 320px;
+    }
+    button {
+      margin-top: 12px;
+      padding: 10px 14px;
+      border: none;
+      border-radius: 10px;
+      background: var(--accent);
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    button:focus {
+      outline: 3px solid rgba(31,111,91,0.2);
+    }
+    .result {
+      margin-top: 16px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px dashed var(--border);
+      background: #faf9f6;
+      min-height: 24px;
+    }
+    .result.good { border-color: #c6e6d8; background: #f1fbf6; }
+    .result.bad { border-color: #f1c1c1; background: #fff5f5; }
+    .dates {
+      display: inline-block;
+      padding: 2px 6px;
+      background: #f0ece4;
+      border-radius: 6px;
+      font-family: "Courier New", monospace;
+      font-size: 0.95rem;
+    }
+    .note {
+      font-size: 0.9rem;
+      margin-top: 10px;
+    }
+    @media (max-width: 480px) {
+      .card { padding: 18px; }
+      h1 { font-size: 1.35rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>ISSAC TK Eligibility Checker for 2025-2026</h1>
+      <p>Enter the child's date of birth to see if they are eligible for Transitional Kindergarten (TK) this year.</p>
+
+      <label for="dob">Date of birth</label>
+      <input id="dob" type="date" />
+      <div>
+        <button id="check" type="button">Check eligibility</button>
+      </div>
+
+      <div id="result" class="result" aria-live="polite"></div>
+      <p class="note">Eligible if born between <span class="dates">Sep 2, 2020</span> and <span class="dates">Sep 1, 2021</span> (inclusive).</p>
+    </div>
+  </div>
+
+  <script>
+    const start = new Date(Date.UTC(2020, 8, 2));  // Sep 2, 2020
+    const end = new Date(Date.UTC(2021, 8, 1));    // Sep 1, 2021
+
+    const dobInput = document.getElementById("dob");
+    const resultEl = document.getElementById("result");
+    const checkBtn = document.getElementById("check");
+
+    function toUtcDate(dateStr) {
+      if (!dateStr) return null;
+      const [y, m, d] = dateStr.split("-").map(Number);
+      return new Date(Date.UTC(y, m - 1, d));
+    }
+
+    function checkEligibility() {
+      const dob = toUtcDate(dobInput.value);
+      resultEl.className = "result";
+
+      if (!dob) {
+        resultEl.textContent = "Please select a date of birth.";
+        return;
+      }
+
+      if (dob >= start && dob <= end) {
+        resultEl.classList.add("good");
+        resultEl.textContent = "Eligible for TK in California based on the provided date of birth.";
+      } else {
+        resultEl.classList.add("bad");
+        resultEl.textContent = "Not eligible for TK based on the provided date of birth.";
+      }
+    }
+
+    checkBtn.addEventListener("click", checkEligibility);
+  </script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ISSAC TK Eligibility 2026-2027</title>
+  <title>ISSAC TK-KD Eligibility 2026-2027</title>
   <style>
     :root {
       --bg: #f7f4ef;
@@ -100,8 +100,8 @@
 <body>
   <div class="wrap">
     <div class="card">
-      <h1>ISSAC TK Eligibility 2026-2027</h1>
-      <p>Enter the child's date of birth to see if they are eligible for Transitional Kindergarten (TK) for 2026-2027.</p>
+      <h1>ISSAC TK-KD Eligibility 2026-2027</h1>
+      <p>Enter the child's date of birth to see if they are eligible for Transitional Kindergarten (TK) or Kindergarten (KD) for 2026-2027.</p>
 
       <label for="dob">Date of birth</label>
       <input id="dob" type="date" />
@@ -110,13 +110,16 @@
       </div>
 
       <div id="result" class="result" aria-live="polite"></div>
-      <p class="note">Eligible if born between <span class="dates">Sep 2, 2021</span> and <span class="dates">Sep 1, 2022</span> (inclusive).</p>
+      <p class="note">TK eligible if born between <span class="dates">Sep 2, 2021</span> and <span class="dates">Sep 1, 2022</span> (inclusive).</p>
+      <p class="note">KD eligible if born between <span class="dates">Sep 2, 2020</span> and <span class="dates">Sep 1, 2021</span> (inclusive).</p>
     </div>
   </div>
 
   <script>
-    const start = new Date(Date.UTC(2021, 8, 2));  // Sep 2, 2021
-    const end = new Date(Date.UTC(2022, 8, 1));    // Sep 1, 2022
+    const tkStart = new Date(Date.UTC(2021, 8, 2));  // Sep 2, 2021
+    const tkEnd = new Date(Date.UTC(2022, 8, 1));    // Sep 1, 2022
+    const kdStart = new Date(Date.UTC(2020, 8, 2));  // Sep 2, 2020
+    const kdEnd = new Date(Date.UTC(2021, 8, 1));    // Sep 1, 2021
 
     const dobInput = document.getElementById("dob");
     const resultEl = document.getElementById("result");
@@ -137,12 +140,18 @@
         return;
       }
 
-      if (dob >= start && dob <= end) {
+      if (dob >= tkStart && dob <= tkEnd) {
         resultEl.classList.add("good");
         resultEl.textContent = "Eligible for TK in California based on the provided date of birth.";
+        return;
+      }
+
+      if (dob >= kdStart && dob <= kdEnd) {
+        resultEl.classList.add("good");
+        resultEl.textContent = "Eligible for KD (Kindergarten) in California based on the provided date of birth.";
       } else {
         resultEl.classList.add("bad");
-        resultEl.textContent = "Not eligible for TK based on the provided date of birth.";
+        resultEl.textContent = "Not eligible for TK or KD based on the provided date of birth.";
       }
     }
 
